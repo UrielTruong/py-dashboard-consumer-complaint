@@ -1,0 +1,21 @@
+{
+  "Filter 1": {
+    "name": "Filter 1",
+    "date_from": "2011-12-01",
+    "date_to": "2019-05-10",
+    "products": [
+      "Debt collection"
+    ],
+    "states": [
+      "FL"
+    ],
+    "channels": [
+      "Phone"
+    ],
+    "timely": "Yes",
+    "disputed": "Yes",
+    "days_min": 0,
+    "days_max": 60,
+    "search": ""
+  }
+}
