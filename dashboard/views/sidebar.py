@@ -1,8 +1,8 @@
 from __future__ import annotations
 from datetime import date
 import streamlit as st
-from ..models.filter_state import FilterState
-from ..models.preset import FilterPreset, PresetManager
+from ..services.filter_state import FilterState
+from ..services.preset import FilterPreset, PresetManager
 
 
 class SidebarView:
@@ -16,11 +16,12 @@ class SidebarView:
             self._render_preset_loader(preset_mgr)
             defaults = (self._defaults_from_preset(loaded, d_min, d_max, meta)
                         if loaded else self._default_values(d_min, d_max, meta))
+
             if loaded:
-                st.info(f'Đã tải preset "{loaded.name}"')
+                st.info(f'Bạn đang xem "{loaded.name}"')
             fs = self._render_widgets(meta, d_min, d_max, defaults)
             st.markdown("---")
-            if st.button("Đặt lại bộ lọc", use_container_width=True):
+            if st.button("Đặt lại filter", use_container_width=True):
                 for k in ("f_dates", "f_products", "f_states", "f_channels",
                           "f_timely", "f_disputed", "f_days", "f_search"):
                     st.session_state.pop(k, None)
@@ -36,7 +37,7 @@ class SidebarView:
         date_from, date_to = picked if len(picked) == 2 else (d_min, d_max)
         products   = st.multiselect("Sản phẩm",  meta["products"], default=defaults["products"], key="f_products")
         states     = st.multiselect("Bang",       meta["states"],   default=defaults["states"],   key="f_states")
-        channels   = st.multiselect("Kênh nộp",  meta["channels"], default=defaults["channels"], key="f_channels")
+        channels   = st.multiselect("Kênh gửi khiếu nại",  meta["channels"], default=defaults["channels"], key="f_channels")
         timely_raw = st.radio("Phản hồi đúng hạn", ["Tất cả", "Yes", "No"],
                               horizontal=True, index=defaults["timely_idx"], key="f_timely")
         disput_raw = st.radio("Khách khiếu kiện lại", ["Tất cả", "Yes", "No"],
@@ -46,7 +47,7 @@ class SidebarView:
                                max_value=min(365, max(1, meta["days_max"])),
                                value=defaults["days"], key="f_days")
         search = st.text_input("Tìm kiếm", value=defaults["search"],
-                               placeholder="công ty / vấn đề / mã KN", key="f_search").strip()
+                               placeholder="Công ty, Vấn đề, Mã khiếu nại,...", key="f_search").strip()
         return FilterState(
             date_from=date_from, date_to=date_to,
             products=products, states=states, channels=channels,
@@ -61,14 +62,14 @@ class SidebarView:
             return
         with st.expander(f"Filter(s) đã lưu ({len(preset_mgr)})", expanded=False):
             chosen = st.selectbox("Chọn preset",
-                                  ["— chọn —"] + preset_mgr.names(),
+                                  [""] + preset_mgr.names(),
                                   label_visibility="collapsed")
             if chosen != "— chọn —":
                 p = preset_mgr.get(chosen)
                 if p:
                     st.caption(p.describe())
                 col_load, col_del = st.columns(2)
-                if col_load.button("Tải", use_container_width=True):
+                if col_load.button("Xem", use_container_width=True):
                     st.session_state["_preset_load"] = preset_mgr.get(chosen)
                     for k in ("f_dates", "f_products", "f_states", "f_channels",
                               "f_timely", "f_disputed", "f_days", "f_search"):
@@ -79,7 +80,7 @@ class SidebarView:
                     st.rerun()
 
     def _render_preset_save(self, fs: FilterState, preset_mgr: PresetManager) -> None:
-        with st.expander("Lưu bộ lọc hiện tại"):
+        with st.expander("Lưu filter hiện tại"):
             name = st.text_input("Tên preset", placeholder="VD: Mortgage Q1 2022",
                                  label_visibility="collapsed")
             if st.button("Lưu", use_container_width=True):

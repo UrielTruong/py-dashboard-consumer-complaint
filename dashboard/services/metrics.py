@@ -1,6 +1,6 @@
 from __future__ import annotations
 from datetime import timedelta
-from .repository import ComplaintsRepository
+from ..repositories.repository import ComplaintsRepository
 from .filter_state import FilterState
 
 

@@ -4,6 +4,9 @@ import streamlit as st
 class InsightsView:
 
     def render(self, insights: list[dict]) -> None:
+        # Page header
+
+
         if not insights:
             return
         cols = st.columns(2, gap="medium")

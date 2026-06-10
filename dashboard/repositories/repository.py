@@ -3,7 +3,7 @@ import duckdb
 import pandas as pd
 import streamlit as st
 from ..config import DB_PATH
-from .filter_state import FilterState
+from ..services.filter_state import FilterState
 
 
 class ComplaintsRepository:
