@@ -1,21 +1,25 @@
 {
-  "Filter 1": {
-    "name": "Filter 1",
+  "FILTER 2": {
+    "name": "FILTER 2",
     "date_from": "2011-12-01",
     "date_to": "2019-05-10",
     "products": [
-      "Debt collection"
+      "Debt collection",
+      "Credit reporting",
+      "Credit card",
+      "Mortgage"
     ],
     "states": [
-      "FL"
+      "TX"
     ],
     "channels": [
+      "Referral",
       "Phone"
     ],
-    "timely": "Yes",
-    "disputed": "Yes",
-    "days_min": 0,
-    "days_max": 60,
+    "timely": "No",
+    "disputed": "No",
+    "days_min": 75,
+    "days_max": 264,
     "search": ""
   }
 }

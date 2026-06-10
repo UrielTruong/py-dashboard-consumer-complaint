@@ -1,10 +1,10 @@
 from __future__ import annotations
 import streamlit as st
 from .config import CUSTOM_CSS
-from .models.repository import ComplaintsRepository
-from .models.metrics import DashboardMetrics
-from .models.insights import InsightEngine
-from .models.preset import PresetManager
+from .repositories.repository import ComplaintsRepository
+from .services.metrics import DashboardMetrics
+from .services.insights import InsightEngine
+from .services.preset import PresetManager
 from .views.sidebar import SidebarView
 from .views.kpi import KPIView
 from .views.charts import ChartsView
@@ -18,7 +18,6 @@ class DashboardController:
         st.set_page_config(
             page_title="Dashboard — Khiếu nại",
             layout="wide",
-            page_icon="📊",
             initial_sidebar_state="expanded",
         )
         st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
@@ -28,6 +27,10 @@ class DashboardController:
         fs      = SidebarView().render(meta, PresetManager())
         metrics = DashboardMetrics(repo, fs)
         charts  = ChartsView()
+
+        # Page header title
+        st.markdown('<div class="card-title">Dashboard Khiếu nại tài chính</div>',
+                    unsafe_allow_html=True)
 
         # KPI row
         KPIView().render(metrics, meta)
@@ -54,7 +57,7 @@ class DashboardController:
         # Row 3: channel donut | response stacked
         c3, c4 = st.columns(2, gap="medium")
         with c3:
-            st.markdown('<div class="card-title">Phân bổ kênh nộp</div>',
+            st.markdown('<div class="card-title">Phân bổ kênh gửi khiếu nại</div>',
                         unsafe_allow_html=True)
             charts.render_channel_donut(repo, fs)
         with c4:

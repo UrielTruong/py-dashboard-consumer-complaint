@@ -1,5 +1,5 @@
 from __future__ import annotations
-from .repository import ComplaintsRepository
+from ..repositories.repository import ComplaintsRepository
 from .filter_state import FilterState
 from .metrics import DashboardMetrics
 

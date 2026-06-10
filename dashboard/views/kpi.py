@@ -1,5 +1,5 @@
 import streamlit as st
-from ..models.metrics import DashboardMetrics
+from ..services.metrics import DashboardMetrics
 
 
 class KPIView:

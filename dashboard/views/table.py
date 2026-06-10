@@ -1,7 +1,7 @@
 import pandas as pd
 import streamlit as st
-from ..models.repository import ComplaintsRepository
-from ..models.filter_state import FilterState
+from ..repositories.repository import ComplaintsRepository
+from ..services.filter_state import FilterState
 
 
 class TableView:
@@ -55,6 +55,6 @@ class TableView:
                     "Tải CSV", csv, "export.csv", "text/csv",
                     use_container_width=True)
             else:
-                st.caption(f"{total_n:,} dòng — thu hẹp bộ lọc xuống ≤100k để tải")
+                st.caption(f"{total_n:,} records — thu hẹp filter xuống ≤100k để tải")
 
-        st.caption(f"Trang {page}/{total_pages} · {total_n:,} bản ghi")
+        st.caption(f"Page {page}/{total_pages} · {total_n:,} records")

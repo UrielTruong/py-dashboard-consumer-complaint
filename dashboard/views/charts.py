@@ -1,7 +1,7 @@
 import streamlit as st
 import plotly.graph_objects as go
-from ..models.repository import ComplaintsRepository
-from ..models.filter_state import FilterState
+from ..repositories.repository import ComplaintsRepository
+from ..services.filter_state import FilterState
 from ..config import PALETTE, DONUT_COLORS, US_STATES
 
 
