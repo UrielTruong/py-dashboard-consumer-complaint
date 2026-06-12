@@ -44,12 +44,14 @@ class TableView:
             st.dataframe(df, use_container_width=True, hide_index=True, height=420)
 
         with col_dl:
+            # Giới hạn 100k dòng để tránh timeout khi export dataset lớn
             if 0 < total_n <= 100_000:
                 csv = repo.fetch(
                     "complaint_id, date_received, product, issue, company, "
                     "state, channel, response, timely, disputed, days_to_resolve",
                     where + " ORDER BY date_received DESC",
                     params,
+                # utf-8-sig thêm BOM giúp Excel mở file CSV tiếng Việt không bị lỗi font
                 ).to_csv(index=False).encode("utf-8-sig")
                 st.download_button(
                     "Tải CSV", csv, "export.csv", "text/csv",

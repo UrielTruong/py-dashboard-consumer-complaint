@@ -10,7 +10,7 @@ class ComplaintsRepository:
 
     @st.cache_resource(show_spinner=False)
     def _get_conn(_self) -> duckdb.DuckDBPyConnection:
-        # _self instead of self: Streamlit skips instance when computing cache key
+        # _self  Streamlit bỏ qua instance khi tính cache key
         if not DB_PATH.exists():
             st.error(f"Không tìm thấy `{DB_PATH.name}`. Run `python migrate.py`")
             st.stop()

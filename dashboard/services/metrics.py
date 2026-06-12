@@ -9,9 +9,11 @@ class DashboardMetrics:
     def __init__(self, repo: ComplaintsRepository, fs: FilterState) -> None:
         self._repo  = repo
         self._fs    = fs
+        # None đánh dấu chưa load sẽ được thay thế bằng dict sau lần truy cập đầu tiên
         self._cache = None
 
     def _load(self):
+        # Lazy-load: chỉ query DB một lần, các property sau đều dùng lại cache
         if self._cache is not None:
             return
         row = self._repo.fetch_one_filtered(
@@ -57,6 +59,7 @@ class DashboardMetrics:
         self._load(); return self._cache["max_days"]
 
     def trend_pct(self, meta: dict) -> float:
+        # So sánh với cùng kỳ liền trước có cùng độ dài
         period = (self._fs.date_to - self._fs.date_from).days
         if period <= 0:
             return 0.0
