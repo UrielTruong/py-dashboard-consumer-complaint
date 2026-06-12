@@ -5,6 +5,7 @@ from dataclasses import dataclass, field
 from datetime import date
 from pathlib import Path
 
+# test data: Lưu ngoài thư mục module để tồn tại giữa các lần chạy lại app
 PRESETS_FILE = Path(__file__).parent.parent.parent / "presets.json"
 
 
@@ -63,6 +64,7 @@ class PresetManager:
                 data = json.loads(PRESETS_FILE.read_text(encoding="utf-8"))
                 self._presets = {k: FilterPreset(**v) for k, v in data.items()}
             except Exception:
+                # File bị corrupt thì reset về rỗng thay vì crash app
                 self._presets = {}
 
     def _persist(self) -> None:

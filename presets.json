@@ -1,25 +1,80 @@
 {
-  "FILTER 2": {
-    "name": "FILTER 2",
-    "date_from": "2011-12-01",
-    "date_to": "2019-05-10",
-    "products": [
-      "Debt collection",
-      "Credit reporting",
-      "Credit card",
-      "Mortgage"
-    ],
-    "states": [
-      "TX"
-    ],
-    "channels": [
-      "Referral",
-      "Phone"
-    ],
-    "timely": "No",
-    "disputed": "No",
-    "days_min": 75,
-    "days_max": 264,
-    "search": ""
+    "Mortgage - California": {
+      "name": "Mortgage - California",
+      "date_from": "2011-12-01",
+      "date_to": "2019-05-10",
+      "products": ["Mortgage"],
+      "states": ["CA"],
+      "channels": [],
+      "timely": null,
+      "disputed": null,
+      "days_min": 0,
+      "days_max": 365,
+      "search": ""
+    },
+    "Debt collection - tre han": {
+      "name": "Debt collection - tre han",
+      "date_from": "2015-01-01",
+      "date_to": "2019-05-10",
+      "products": ["Debt collection"],
+      "states": [],
+      "channels": [],
+      "timely": "No",
+      "disputed": null,
+      "days_min": 0,
+      "days_max": 365,
+      "search": ""
+    },
+    "Credit card - khieu kien lai": {
+      "name": "Credit card - khieu kien lai",
+      "date_from": "2011-12-01",
+      "date_to": "2019-05-10",
+      "products": ["Credit card", "Credit card or prepaid card"],
+      "states": [],
+      "channels": [],
+      "timely": null,
+      "disputed": "Yes",
+      "days_min": 0,
+      "days_max": 365,
+      "search": ""
+    },
+    "Top 3 bang nong (2018-2019)": {
+      "name": "Top 3 bang nong (2018-2019)",
+      "date_from": "2018-01-01",
+      "date_to": "2019-05-10",
+      "products": [],
+      "states": ["CA", "FL", "TX"],
+      "channels": [],
+      "timely": null,
+      "disputed": null,
+      "days_min": 0,
+      "days_max": 365,
+      "search": ""
+    },
+    "Kenh Web - xu ly nhanh (<=30 ngay)": {
+      "name": "Kenh Web - xu ly nhanh (<=30 ngay)",
+      "date_from": "2011-12-01",
+      "date_to": "2019-05-10",
+      "products": [],
+      "states": [],
+      "channels": ["Web"],
+      "timely": "Yes",
+      "disputed": null,
+      "days_min": 0,
+      "days_max": 30,
+      "search": ""
+    },
+    "Tim kiem - Wells Fargo": {
+      "name": "Tim kiem - Wells Fargo",
+      "date_from": "2011-12-01",
+      "date_to": "2019-05-10",
+      "products": [],
+      "states": [],
+      "channels": [],
+      "timely": null,
+      "disputed": null,
+      "days_min": 0,
+      "days_max": 365,
+      "search": "wells fargo"
+    }
   }
-}

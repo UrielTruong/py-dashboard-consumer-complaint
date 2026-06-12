@@ -72,7 +72,9 @@ class ChartsView:
             y=df["label"], x=df["dispute"], orientation="h",
             marker=dict(color=PALETTE["accent2"]), name="Khiếu kiện lại"))
         fig.update_layout(
+            # overlay: vẽ cột "khiếu kiện lại" chồng lên "tổng" thay vì đặt cạnh nhau
             barmode="overlay",
+            # reversed: đảo trục Y để sản phẩm có số lượng cao nhất hiển thị ở trên cùng
             yaxis=dict(autorange="reversed", color=PALETTE["muted"], tickfont=self._tf()),
             xaxis=dict(gridcolor=PALETTE["border"], tickfont=self._tf()),
             legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),

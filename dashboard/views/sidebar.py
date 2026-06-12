@@ -10,6 +10,7 @@ class SidebarView:
     def render(self, meta: dict, preset_mgr: PresetManager) -> FilterState:
         d_min = meta["date_min"] if isinstance(meta["date_min"], date) else meta["date_min"].date()
         d_max = meta["date_max"] if isinstance(meta["date_max"], date) else meta["date_max"].date()
+        # pop: đọc và xóa preset khỏi session cùng một lúc
         loaded: FilterPreset | None = st.session_state.pop("_preset_load", None)
 
         with st.sidebar:

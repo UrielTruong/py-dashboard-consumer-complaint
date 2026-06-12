@@ -27,6 +27,7 @@ class FilterState:
             raise ValueError("days_min phải ≤ days_max")
 
     def build_where(self) -> tuple[str, list]:
+        # Dùng placeholder ? để tránh SQL injection
         conds  = ["date_received BETWEEN ? AND ?"]
         params = [self.date_from, self.date_to]
 
@@ -63,6 +64,7 @@ class FilterState:
         return " WHERE " + " AND ".join(conds), params
 
     def is_default(self, meta: dict) -> bool:
+        # chuẩn hóa data type date time
         d_min = meta["date_min"] if isinstance(meta["date_min"], date) else meta["date_min"].date()
         d_max = meta["date_max"] if isinstance(meta["date_max"], date) else meta["date_max"].date()
         return (

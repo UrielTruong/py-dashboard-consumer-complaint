@@ -13,6 +13,7 @@ class InsightEngine:
         self._metrics = metrics
 
     def run(self) -> list[dict]:
+        # Không có dữ liệu thì bỏ qua toàn bộ phân tích
         if self._metrics.n == 0:
             return []
         where, params = self._fs.build_where()
@@ -39,10 +40,12 @@ class InsightEngine:
                  "body": "Sản phẩm bị phàn nàn nhiều nhất. Ưu tiên review quy trình xử lý."}]
 
     def _dispute_rate(self) -> list[dict]:
+        # So sánh tỷ lệ khiếu kiện lại của bộ lọc hiện tại với toàn bộ dataset
         disp_all = self._repo.fetch_one(
             "AVG(CASE WHEN disputed='Yes' THEN 1.0 ELSE 0 END)", "", [])[0] or 0
         cur  = self._metrics.disputed_n / self._metrics.n
         diff = (cur - disp_all) * 100
+        # Ngưỡng +/-1 điểm phần trăm để tránh phân loại khi chênh lệch không đáng kể
         if   diff >  1: tone, tag, sign = "warn", "Cảnh báo",   f"cao hơn {diff:.1f} đpt"
         elif diff < -1: tone, tag, sign = "pos",  "Tích cực",   f"thấp hơn {abs(diff):.1f} đpt"
         else:           tone, tag, sign = "",     "Trung tính", "sát mức chung"
@@ -51,6 +54,7 @@ class InsightEngine:
                  "body": "Khách tiếp tục khiếu nại cho thấy giải pháp ban đầu chưa thoả đáng."}]
 
     def _resolution_time(self) -> list[dict]:
+        # all_avg lấy trên toàn bộ bảng làm chuẩn so sánh
         all_avg   = self._repo.fetch_one("AVG(days_to_resolve)", "", [])[0] or 0
         delta     = self._metrics.avg_days - all_avg
         direction = "chậm hơn" if delta > 0 else "nhanh hơn"
@@ -59,6 +63,7 @@ class InsightEngine:
                  "body": f"So với toàn bộ {all_avg:.1f} ngày — {direction} {abs(delta):.1f} ngày."}]
 
     def _worst_response(self, where, params) -> list[dict]:
+        # HAVING COUNT(*) >= 30 loại bỏ các phản hồi quá ít
         row = self._repo.fetch_one(
             "response, COUNT(*) AS n, "
             "AVG(CASE WHEN disputed='Yes' THEN 1.0 ELSE 0 END) AS rate",
@@ -89,10 +94,12 @@ class InsightEngine:
             "date_trunc('month', date_received) AS m, COUNT(*) AS n",
             where + " GROUP BY 1 ORDER BY 1",
             params)
+        # Cần ít nhất 3 tháng mới có đủ cơ sở tính trung bình để phát hiện đột biến
         if len(df) < 3:
             return []
         avg_m = df["n"].mean()
         spike = df.loc[df["n"].idxmax()]
+        # Chỉ báo khi tháng cao nhất vượt 1.8 lần trung bình (>80% trên mức bình thường)
         if spike["n"] <= avg_m * 1.8:
             return []
         pct_above = spike["n"] / avg_m * 100 - 100
@@ -106,6 +113,7 @@ class InsightEngine:
             where + " AND timely IS NOT NULL GROUP BY timely",
             params)
         tm = dict(zip(df["timely"], df["rate"]))
+        # skip nếu chênh lệch < 2 điểm phần trăm vì không đủ ý nghĩa thực tế
         if "Yes" not in tm or "No" not in tm or tm["No"] <= tm["Yes"] + 0.02:
             return []
         diff_pp = (tm["No"] - tm["Yes"]) * 100
